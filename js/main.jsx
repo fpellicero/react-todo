@@ -1,6 +1,6 @@
+import TodoApp from './Components/TodoApp';
+
 ReactDOM.render(
-  <div>
-    OH HI
-  </div>,
+  <TodoApp />,
   document.getElementById("app")
 );
