@@ -1,6 +1,6 @@
 ReactDOM.render(
   <div>
-    OH HI!
+    OH HI
   </div>,
   document.getElementById("app")
 );
