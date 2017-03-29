@@ -29,7 +29,7 @@ class TodoApp extends Component {
       id: ++this.lastId,
       task: task
     };
-    console.log(this.lastId);
+    console.log(taskObject);
     tasks.push(taskObject);
 
     this.setState({
@@ -44,6 +44,8 @@ class TodoApp extends Component {
     for (var i = 0; i < tasks.length; i++) {
       let task = tasks[i];
       if(task.id == taskId) continue;
+
+      newTasks.push(task);
     }
 
     this.setState({
