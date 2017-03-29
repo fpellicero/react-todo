@@ -7844,8 +7844,10 @@ var TodoApp = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (TodoApp.__proto__ || (0, _getPrototypeOf2.default)(TodoApp)).call(this, props));
 
     _this.state = _this._getInitialState();
+    _this.lastId = 0;
 
     _this._createTask = _this._createTask.bind(_this);
+    _this._deleteTask = _this._deleteTask.bind(_this);
     return _this;
   }
 
@@ -7861,10 +7863,30 @@ var TodoApp = function (_Component) {
     value: function _createTask(task) {
       var tasks = this.state.tasks.slice();
 
-      tasks.push(task);
+      var taskObject = {
+        id: ++this.lastId,
+        task: task
+      };
+      console.log(this.lastId);
+      tasks.push(taskObject);
 
       this.setState({
         tasks: tasks
+      });
+    }
+  }, {
+    key: '_deleteTask',
+    value: function _deleteTask(taskId) {
+      var tasks = this.state.tasks;
+
+      var newTasks = [];
+      for (var i = 0; i < tasks.length; i++) {
+        var task = tasks[i];
+        if (task.id == taskId) continue;
+      }
+
+      this.setState({
+        tasks: newTasks
       });
     }
   }, {
@@ -7875,7 +7897,7 @@ var TodoApp = function (_Component) {
         null,
         _react2.default.createElement(_Title2.default, { title: 'My ToDo App' }),
         _react2.default.createElement(_TaskForm2.default, { onInput: this._createTask }),
-        _react2.default.createElement(_TaskList2.default, { tasks: this.state.tasks })
+        _react2.default.createElement(_TaskList2.default, { tasks: this.state.tasks, deleteTask: this._deleteTask })
       );
     }
   }]);
@@ -7892,22 +7914,90 @@ exports.default = TodoApp;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+
+var _getPrototypeOf = __webpack_require__(52);
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = __webpack_require__(1);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(53);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(3);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(2);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
 
 var _ListGroupItem = __webpack_require__(110);
 
 var _ListGroupItem2 = _interopRequireDefault(_ListGroupItem);
 
+var _reactBootstrap = __webpack_require__(242);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Task = function Task(props) {
-  return React.createElement(
-    _ListGroupItem2.default,
-    null,
-    props.task
-  );
-};
+var Task = function (_Component) {
+    (0, _inherits3.default)(Task, _Component);
+
+    function Task(props) {
+        (0, _classCallCheck3.default)(this, Task);
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (Task.__proto__ || (0, _getPrototypeOf2.default)(Task)).call(this, props));
+
+        _this._delete = _this._delete.bind(_this);
+        return _this;
+    }
+
+    (0, _createClass3.default)(Task, [{
+        key: '_onClick',
+        value: function _onClick() {
+            console.log('clicked');
+        }
+    }, {
+        key: '_delete',
+        value: function _delete() {
+            this.props.deleteTask(this.props.task.id);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var style = {
+                position: 'absolute',
+                right: '3px',
+                top: '3px'
+            };
+            return _react2.default.createElement(
+                _ListGroupItem2.default,
+                null,
+                this.props.task.task,
+                _react2.default.createElement(
+                    _reactBootstrap.Button,
+                    { type: 'submit', onClick: this._onClick, style: style },
+                    'Add subtask'
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Button,
+                    { type: 'submit', onClick: this._delete, style: style },
+                    'Delete'
+                )
+            );
+        }
+    }]);
+    return Task;
+}(_react.Component);
 
 exports.default = Task;
 
@@ -8061,11 +8151,13 @@ var TaskList = function (_Component) {
   (0, _createClass3.default)(TaskList, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         _ListGroup2.default,
         null,
         this.props.tasks.map(function (task, i) {
-          return _react2.default.createElement(_Task2.default, { key: 'task_' + i, task: task });
+          return _react2.default.createElement(_Task2.default, { key: 'task_' + i, task: task, deleteTask: _this2.props.deleteTask });
         })
       );
     }

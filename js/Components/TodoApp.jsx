@@ -10,8 +10,10 @@ class TodoApp extends Component {
     super(props);
 
     this.state = this._getInitialState();
+    this.lastId = 0;
 
     this._createTask = this._createTask.bind(this);
+    this._deleteTask = this._deleteTask.bind(this);
   }
 
   _getInitialState() {
@@ -23,11 +25,30 @@ class TodoApp extends Component {
   _createTask(task) {
     let tasks = this.state.tasks.slice();
 
-    tasks.push(task);
+    let taskObject = {
+      id: ++this.lastId,
+      task: task
+    };
+    console.log(this.lastId);
+    tasks.push(taskObject);
 
     this.setState({
       tasks: tasks
     })
+  }
+
+  _deleteTask(taskId) {
+    let tasks = this.state.tasks;
+
+    let newTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+      let task = tasks[i];
+      if(task.id == taskId) continue;
+    }
+
+    this.setState({
+      tasks: newTasks
+    });
   }
 
   render() {
@@ -35,7 +56,7 @@ class TodoApp extends Component {
       <Grid>
         <Title title="My ToDo App" />
         <TaskForm onInput={this._createTask}/>
-        <TaskList tasks={this.state.tasks} />
+        <TaskList tasks={this.state.tasks} deleteTask={this._deleteTask} />
       </Grid>
     )
   }

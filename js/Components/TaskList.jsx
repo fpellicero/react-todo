@@ -9,10 +9,10 @@ class TaskList extends Component {
   }
 
   render() {
-    return(  
+    return(
       <ListGroup>
           {this.props.tasks.map((task, i) =>
-            <Task key={`task_${i}`} task={task} />
+            <Task key={`task_${i}`} task={task} deleteTask={this.props.deleteTask}/>
           )}
       </ListGroup>
     )
