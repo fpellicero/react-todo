@@ -8100,9 +8100,9 @@ var _TaskList = __webpack_require__(128);
 
 var _TaskList2 = _interopRequireDefault(_TaskList);
 
-var _TaskForm = __webpack_require__(127);
+var _GeneralInputForm = __webpack_require__(126);
 
-var _TaskForm2 = _interopRequireDefault(_TaskForm);
+var _GeneralInputForm2 = _interopRequireDefault(_GeneralInputForm);
 
 var _Grid = __webpack_require__(247);
 
@@ -8123,6 +8123,7 @@ var TodoApp = function (_Component) {
 
     _this._createTask = _this._createTask.bind(_this);
     _this._deleteTask = _this._deleteTask.bind(_this);
+    _this._setUserName = _this._setUserName.bind(_this);
     return _this;
   }
 
@@ -8130,12 +8131,25 @@ var TodoApp = function (_Component) {
     key: '_getInitialState',
     value: function _getInitialState() {
       return {
+        UserName: null,
         tasks: []
       };
     }
   }, {
+    key: '_setUserName',
+    value: function _setUserName(userName) {
+      this.setState({
+        UserName: userName
+      });
+    }
+  }, {
     key: '_createTask',
     value: function _createTask(task) {
+      if (this.state.UserName == null) {
+        alert("You need a username");
+        return;
+      }
+
       var tasks = this.state.tasks.slice();
 
       var taskObject = {
@@ -8167,13 +8181,28 @@ var TodoApp = function (_Component) {
       });
     }
   }, {
+    key: '_renderUsernameInput',
+    value: function _renderUsernameInput() {
+      if (this.state.UserName) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          ' Welcome back ',
+          this.state.UserName,
+          '!'
+        );
+      }
+      return _react2.default.createElement(_GeneralInputForm2.default, { onInput: this._setUserName, placeholder: 'Set a Username' });
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         _Grid2.default,
         null,
         _react2.default.createElement(_Title2.default, { title: 'My ToDo App' }),
-        _react2.default.createElement(_TaskForm2.default, { onInput: this._createTask }),
+        this._renderUsernameInput(),
+        _react2.default.createElement(_GeneralInputForm2.default, { onInput: this._createTask, placeholder: 'Create Task' }),
         _react2.default.createElement(_TaskList2.default, { tasks: this.state.tasks, deleteTask: this._deleteTask })
       );
     }
@@ -8185,6 +8214,96 @@ exports.default = TodoApp;
 
 /***/ }),
 /* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = __webpack_require__(38);
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = __webpack_require__(1);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(39);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(3);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(2);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(109);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TaskForm = function (_Component) {
+  (0, _inherits3.default)(TaskForm, _Component);
+
+  function TaskForm(props) {
+    (0, _classCallCheck3.default)(this, TaskForm);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (TaskForm.__proto__ || (0, _getPrototypeOf2.default)(TaskForm)).call(this, props));
+
+    _this._onClick = _this._onClick.bind(_this);
+    return _this;
+  }
+
+  (0, _createClass3.default)(TaskForm, [{
+    key: '_onClick',
+    value: function _onClick(e) {
+      e.preventDefault();
+      var task = ReactDOM.findDOMNode(this.input).value;
+
+      if (typeof this.props.onInput === "function") this.props.onInput(task);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        _reactBootstrap.Form,
+        { inline: true },
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          { controlId: 'formInlineName' },
+          _react2.default.createElement(_reactBootstrap.FormControl, {
+            type: 'text',
+            placeholder: this.props.placeholder,
+            ref: function ref(input) {
+              _this2.input = input;
+            } })
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Button,
+          { type: 'submit', onClick: this._onClick },
+          'Go!'
+        )
+      );
+    }
+  }]);
+  return TaskForm;
+}(_react.Component);
+
+exports.default = TaskForm;
+
+/***/ }),
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8279,96 +8398,6 @@ var Task = function (_Component) {
 exports.default = Task;
 
 /***/ }),
-/* 127 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _getPrototypeOf = __webpack_require__(38);
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = __webpack_require__(1);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(39);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(3);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(2);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactBootstrap = __webpack_require__(109);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TaskForm = function (_Component) {
-  (0, _inherits3.default)(TaskForm, _Component);
-
-  function TaskForm(props) {
-    (0, _classCallCheck3.default)(this, TaskForm);
-
-    var _this = (0, _possibleConstructorReturn3.default)(this, (TaskForm.__proto__ || (0, _getPrototypeOf2.default)(TaskForm)).call(this, props));
-
-    _this._onClick = _this._onClick.bind(_this);
-    return _this;
-  }
-
-  (0, _createClass3.default)(TaskForm, [{
-    key: '_onClick',
-    value: function _onClick(e) {
-      e.preventDefault();
-      var task = ReactDOM.findDOMNode(this.input).value;
-
-      if (typeof this.props.onInput === "function") this.props.onInput(task);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        _reactBootstrap.Form,
-        { inline: true },
-        _react2.default.createElement(
-          _reactBootstrap.FormGroup,
-          { controlId: 'formInlineName' },
-          _react2.default.createElement(_reactBootstrap.FormControl, {
-            type: 'text',
-            placeholder: 'What\'s next?',
-            ref: function ref(input) {
-              _this2.input = input;
-            } })
-        ),
-        _react2.default.createElement(
-          _reactBootstrap.Button,
-          { type: 'submit', onClick: this._onClick },
-          'Go!'
-        )
-      );
-    }
-  }]);
-  return TaskForm;
-}(_react.Component);
-
-exports.default = TaskForm;
-
-/***/ }),
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8403,7 +8432,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Task = __webpack_require__(126);
+var _Task = __webpack_require__(127);
 
 var _Task2 = _interopRequireDefault(_Task);
 
