@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import {Button} from 'react-bootstrap';
+import TaskForm from './TaskForm';
 
 class Task extends Component {
   constructor(props) {
     super(props);
   }
 
-  _onClick() {
+  _onAddSubtask() {
     console.log('clicked');
   }
 
@@ -20,9 +21,7 @@ class Task extends Component {
     return (
       <ListGroupItem>
         {this.props.task}
-        <Button type="submit" onClick={this._onClick} style={style}>
-          Add subtask
-        </Button>
+        <TaskForm onInput={this._onAddSubtask} style={style}/>
       </ListGroupItem>
     )
   }
