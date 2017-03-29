@@ -11,7 +11,7 @@ class TaskForm extends Component {
   _onClick(e) {
     e.preventDefault();
     let task = ReactDOM.findDOMNode(this.input).value;
-    
+
     if(typeof this.props.onInput === "function") this.props.onInput(task);
   }
 
@@ -21,7 +21,7 @@ class TaskForm extends Component {
         <FormGroup controlId="formInlineName">
           <FormControl
             type="text"
-            placeholder="What's next?"
+            placeholder={this.props.placeholder}
             ref={(input) => {this.input = input;}} />
         </FormGroup>
         <Button type="submit" onClick={this._onClick}>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Title from './Title';
 import TaskList from './TaskList';
-import TaskForm from './TaskForm';
+import GeneralInputForm from './GeneralInputForm';
 import Grid from 'react-bootstrap/lib/Grid';
 import _ from 'lodash';
 
@@ -15,23 +15,36 @@ class TodoApp extends Component {
 
     this._createTask = this._createTask.bind(this);
     this._deleteTask = this._deleteTask.bind(this);
+    this._setUserName = this._setUserName.bind(this);
     this._onAddSubtask = this._onAddSubtask.bind(this);
   }
 
   _getInitialState() {
     return {
+      UserName: null,
       tasks: []
     }
   }
 
+  _setUserName(userName) {
+    this.setState({
+      UserName: userName
+    });
+  }
+
   _createTask(task) {
+    if(this.state.UserName == null) {
+      alert("You need a username");
+      return;
+    }
+
     let tasks = this.state.tasks.slice();
 
     let taskObject = {
       id: ++this.lastId,
       task: task
     };
-    console.log(this.lastId);
+    console.log(taskObject);
     tasks.push(taskObject);
 
     this.setState({
@@ -46,6 +59,8 @@ class TodoApp extends Component {
     for (var i = 0; i < tasks.length; i++) {
       let task = tasks[i];
       if(task.id == taskId) continue;
+
+      newTasks.push(task);
     }
 
     this.setState({
@@ -64,11 +79,19 @@ class TodoApp extends Component {
     this.setState({tasks});
   }
 
+  _renderUsernameInput() {
+    if(this.state.UserName) {
+      return(<div> Welcome back {this.state.UserName}!</div>);
+    }
+    return(<GeneralInputForm onInput={this._setUserName} placeholder="Set a Username"/>)
+  }
+
   render() {
     return(
       <Grid>
         <Title title="My ToDo App" />
-        <TaskForm onInput={this._createTask}/>
+        {this._renderUsernameInput()}
+        <GeneralInputForm onInput={this._createTask} placeholder="Create Task"/>
         <TaskList tasks={this.state.tasks} deleteTask={this._deleteTask} addSubTask={this._onAddSubtask} />
       </Grid>
     )

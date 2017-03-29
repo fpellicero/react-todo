@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import {Button} from 'react-bootstrap';
-import TaskForm from './TaskForm';
+import GeneralInputForm from './GeneralInputForm';
 
 class Task extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class Task extends Component {
                     <div style={{'margin-left': '15px'}} key={`${child}_${index}`}>{child.task}</div>
                   ))
                 }
-                <TaskForm onInput={this._onAddSubtask} style={style}/>
+                <GeneralInputForm onInput={this._onAddSubtask} placeholder="Add subtask" style={style}/>
                 <Button type="submit" onClick={this._delete} style={style}>
                     Delete
                 </Button>
