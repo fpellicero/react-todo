@@ -20,6 +20,15 @@ module.exports = {
                   plugins: ['transform-runtime'],
                   presets: ['es2015', 'react']
               }
+            },
+            {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              exclude: /node_modules/,
+              query: {
+                  plugins: [require.resolve('babel-plugin-transform-runtime'), require.resolve("babel-plugin-transform-object-rest-spread")],
+                  presets: [require.resolve('babel-preset-es2015')]
+              }
             }
         ]
     },

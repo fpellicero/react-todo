@@ -7,7 +7,6 @@ class Task extends Component {
     constructor(props) {
         super(props);
 
-        this._delete = this._delete.bind(this);
         this._onAddSubtask = this._onAddSubtask.bind(this);
     }
 
@@ -16,11 +15,16 @@ class Task extends Component {
       this.props.onAddSubTask(newTask, parentId);
     }
 
-    _delete() {
-        this.props.deleteTask(this.props.task.id);
+    _renderChildTasks() {
+        const {childTasks} = this.props.task;
+        if(!childTasks) return null;
+        return (childTasks.map((child, index) => (
+            <div style={{'margin-left': '15px'}} key={`${child}_${index}`}>{child.task}</div>
+        )));
     }
 
     render() {
+        const{task, deleteTask} = this.props;
         const style = {
             position: 'absolute',
             right: '3px',
@@ -29,14 +33,9 @@ class Task extends Component {
         return (
             <ListGroupItem>
                 {this.props.task.task}
-                {
-                  this.props.task.childTasks &&
-                  this.props.task.childTasks.map((child, index) => (
-                    <div style={{'margin-left': '15px'}} key={`${child}_${index}`}>{child.task}</div>
-                  ))
-                }
+                {this._renderChildTasks()}
                 <GeneralInputForm onInput={this._onAddSubtask} placeholder="Add subtask" style={style}/>
-                <Button type="submit" onClick={this._delete} style={style}>
+                <Button type="submit" onClick={() => {deleteTask(task.id);}} style={style}>
                     Delete
                 </Button>
             </ListGroupItem>

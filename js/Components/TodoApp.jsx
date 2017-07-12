@@ -1,89 +1,33 @@
 import React, {Component} from 'react';
 import Title from './Title';
-import TaskList from './TaskList';
+import TaskListContainer from '../Containers/TaskListContainer';
 import GeneralInputForm from './GeneralInputForm';
 import Grid from 'react-bootstrap/lib/Grid';
-import _ from 'lodash';
-
+import {setUsername} from '../actions/username';
 
 class TodoApp extends Component {
   constructor(props) {
     super(props);
 
-    this.state = this._getInitialState();
-    this.lastId = 0;
-
     this._createTask = this._createTask.bind(this);
-    this._deleteTask = this._deleteTask.bind(this);
-    this._setUserName = this._setUserName.bind(this);
-    this._onAddSubtask = this._onAddSubtask.bind(this);
-  }
-
-  _getInitialState() {
-    return {
-      UserName: null,
-      tasks: []
-    }
-  }
-
-  _setUserName(userName) {
-    this.setState({
-      UserName: userName
-    });
   }
 
   _createTask(task) {
-    if(this.state.UserName == null) {
+    const {userName, CreateTask} = this.props;
+    if(userName == null) {
       alert("You need a username");
       return;
     }
 
-    let tasks = this.state.tasks.slice();
-
-    let taskObject = {
-      id: ++this.lastId,
-      task: task
-    };
-    console.log(taskObject);
-    tasks.push(taskObject);
-
-    this.setState({
-      tasks: tasks
-    })
-  }
-
-  _deleteTask(taskId) {
-    let tasks = this.state.tasks;
-
-    let newTasks = [];
-    for (var i = 0; i < tasks.length; i++) {
-      let task = tasks[i];
-      if(task.id == taskId) continue;
-
-      newTasks.push(task);
-    }
-
-    this.setState({
-      tasks: newTasks
-    });
-  }
-
-  _onAddSubtask(newTask, parentId) {
-    console.log('ADDING');
-    const tasks = this.state.tasks;
-    const parentTaskIndex = _.findIndex(tasks, {id: parentId});
-    console.log('index  : ' + parentTaskIndex);
-    if (!(tasks[parentTaskIndex].childTasks)) tasks[parentTaskIndex].childTasks = [];
-    tasks[parentTaskIndex].childTasks.push({id: ++this.lastId, task: newTask});
-    console.log(tasks);
-    this.setState({tasks});
+    CreateTask(task);
   }
 
   _renderUsernameInput() {
-    if(this.state.UserName) {
-      return(<div> Welcome back {this.state.UserName}!</div>);
+    const {userName, SetUsername} = this.props;
+    if(userName) {
+      return(<div> Welcome back {userName}!</div>);
     }
-    return(<GeneralInputForm onInput={this._setUserName} placeholder="Set a Username"/>)
+    return(<GeneralInputForm onInput={SetUsername} placeholder="Set a Username"/>)
   }
 
   render() {
@@ -92,7 +36,7 @@ class TodoApp extends Component {
         <Title title="My ToDo App" />
         {this._renderUsernameInput()}
         <GeneralInputForm onInput={this._createTask} placeholder="Create Task"/>
-        <TaskList tasks={this.state.tasks} deleteTask={this._deleteTask} addSubTask={this._onAddSubtask} />
+        <TaskListContainer />
       </Grid>
     )
   }
