@@ -3,7 +3,6 @@ import Title from './Title';
 import TaskListContainer from '../Containers/TaskListContainer';
 import GeneralInputForm from './GeneralInputForm';
 import Grid from 'react-bootstrap/lib/Grid';
-import {setUsername} from '../actions/username';
 
 class TodoApp extends Component {
   constructor(props) {
