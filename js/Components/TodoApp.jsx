@@ -1,44 +1,36 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Title from './Title';
 import TaskListContainer from '../Containers/TaskListContainer';
 import GeneralInputForm from './GeneralInputForm';
 import Grid from 'react-bootstrap/lib/Grid';
 
-class TodoApp extends Component {
-  constructor(props) {
-    super(props);
-
-    this._createTask = this._createTask.bind(this);
-  }
-
-  _createTask(task) {
-    const {userName, CreateTask} = this.props;
+const TodoApp = ({userName, CreateTask, SetUsername}) => {
+  
+  const _createTask = (task) => {
     if(userName == null) {
       alert("You need a username");
       return;
     }
-
+    
     CreateTask(task);
   }
 
-  _renderUsernameInput() {
-    const {userName, SetUsername} = this.props;
+  return (
+    <Grid>
+      <Title title="My ToDo App" />
+      <UserNameInput userName={userName} SetUsername={SetUsername} />
+      <hr/>
+      <GeneralInputForm onInput={_createTask} placeholder="Create Task"/>
+      <TaskListContainer />
+    </Grid>
+    )
+  }
+  
+  const UserNameInput = ({userName, SetUsername}) => {
     if(userName) {
       return(<div> Welcome back {userName}!</div>);
     }
     return(<GeneralInputForm onInput={SetUsername} placeholder="Set a Username"/>)
   }
-
-  render() {
-    return(
-      <Grid>
-        <Title title="My ToDo App" />
-        {this._renderUsernameInput()}
-        <GeneralInputForm onInput={this._createTask} placeholder="Create Task"/>
-        <TaskListContainer />
-      </Grid>
-    )
-  }
-}
-
-export default TodoApp;
+    
+    export default TodoApp;
